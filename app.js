@@ -3,10 +3,15 @@
  */
 
 var express = require('express');
+require('./models');    //at present for mongodb
 var webRouter=require('./web_router');
-
+var bodyParser = require('body-parser');
 
 var app = express();
+
+// 通用的中间件
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 //static resource
 app.use(express.static('public'));    //app.use(express.static(path.join(__dirname, 'public')));

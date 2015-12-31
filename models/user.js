@@ -4,19 +4,19 @@
 
 var mongodb = require('./db');
 
+module.exports = User;
+
 function User(user) {
-    this.name = user.name;
+    this.username = user.username;
     this.password = user.password;
     this.email = user.email;
 };
 
-module.exports = User;
-
-//存储用户信息
+//存储用户信息 ex:new User().save()
 User.prototype.save = function(callback) {
     //要存入数据库的用户文档
     var user = {
-        name: this.name,
+        username: this.username,
         password: this.password,
         email: this.email
     };
@@ -32,20 +32,19 @@ User.prototype.save = function(callback) {
                 return callback(err);//错误，返回 err 信息
             }
             //将用户数据插入 users 集合
-            collection.insert(user, {
-                safe: true
-            }, function (err, user) {
-                mongodb.close();
-                if (err) {
-                    return callback(err);//错误，返回 err 信息
-                }
-                callback(null, user[0]);//成功！err 为 null，并返回存储后的用户文档
-            });
+            collection.insert(user, {safe: true},
+                function (err, user) {
+                    mongodb.close();
+                    if (err) {
+                        return callback(err);//错误，返回 err 信息
+                    }
+                    callback(null, user.ops[0]);//成功！err 为 null，并返回存储后的用户文档
+                });
         });
     });
 };
 
-//读取用户信息
+//读取用户信息 ex:User.get()
 User.get = function(name, callback) {
     //打开数据库
     mongodb.open(function (err, db) {
@@ -60,7 +59,7 @@ User.get = function(name, callback) {
             }
             //查找用户名（name键）值为 name 一个文档
             collection.findOne({
-                name: name
+                username: name
             }, function (err, user) {
                 mongodb.close();
                 if (err) {
@@ -71,3 +70,4 @@ User.get = function(name, callback) {
         });
     });
 };
+

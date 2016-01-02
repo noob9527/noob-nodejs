@@ -1,6 +1,6 @@
 config.js
 #.cov
-#coverage
+coverage
 node_modules
 #.naeindex
 #coverage.html

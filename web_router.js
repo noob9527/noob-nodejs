@@ -15,3 +15,4 @@ router.get('/signup', controller.sign.showSignup);
 router.post('/signup', controller.sign.signup);
 
 router.get('/signin', controller.sign.showSignin);
+router.post('/signin',controller.sign.signin);

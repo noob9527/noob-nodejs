@@ -15,8 +15,8 @@ require('./models');    //at present for mongodb
 var app = express();
 
 //common middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({limit: '1mb'}));
+app.use(bodyParser.urlencoded({ extended: true,limit: '1mb'}));
 app.use(cookieParser(config.secret));
 
 app.use(session({

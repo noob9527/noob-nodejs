@@ -6,25 +6,32 @@ var User=require('../models').User;
 
 exports.showSignup=function (req, res) {
     res.render('sign/signup');
-}
+};
 
 exports.signup=function (req, res) {
     var user=new User(req.body.user);
+    if(req.body.user.password!==req.body.user.repassword){
+        res.status(422);
+        return res.render('sign/signup',{
+            err:"两次输入的密码不一致"
+        });
+    }
     //save user
     user.save(function (err, user) {
         if (err) {
-            //req.flash('error', err); //=>about session
-            return res.redirect('/signup');//注册失败返回主册页
+            res.status(422);
+            return res.render('sign/signup',{
+                err:err.toString()
+            });//mongooseErr
         }
         req.session.user = user;
-        //req.flash('success', '注册成功!');
         res.redirect('/');//注册成功后返回主页
     });
-}
+};
 
 exports.showSignin=function (req, res) {
     res.render('sign/signin');
-}
+};
 
 exports.signin= function (req,res) {
     User.findOne({username:req.body.user.username},function(err,user){
@@ -40,4 +47,4 @@ exports.signin= function (req,res) {
         req.session.user=user;
         res.redirect('/');
     })
-}
+};

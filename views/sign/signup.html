@@ -2,25 +2,31 @@
 <div class="container-fluid">
     <form class="form-horizontal" action="signup" method="post">
         <div class="form-group">
-            <label for="username" class="col-sm-2 control-label">Username</label>
+            <label for="username" class="sr-only">Username</label>
             <div class="col-sm-4">
                 <input type="text" class="form-control" id="username" name="user[username]" placeholder="Username">
             </div>
         </div>
         <div class="form-group">
-            <label for="email" class="col-sm-2 control-label">Email</label>
+            <label for="email" class="sr-only">Email</label>
             <div class="col-sm-4">
                 <input type="email" class="form-control" id="email" name="user[email]" placeholder="Email">
             </div>
         </div>
         <div class="form-group">
-            <label for="password" class="col-sm-2 control-label">Password</label>
+            <label for="password" class="sr-only">Password</label>
             <div class="col-sm-4">
                 <input type="password" class="form-control" id="password" name="user[password]" placeholder="Password">
             </div>
         </div>
         <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-4">
+            <label for="repassword" class="sr-only">repassword</label>
+            <div class="col-sm-4">
+                <input type="password" class="form-control" id="repassword" name="user[repassword]" placeholder="RePassword">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-4">
                 <button type="submit" class="btn btn-primary">Sign up</button>
             </div>
         </div>

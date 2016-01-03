@@ -9,8 +9,8 @@ mongoose.connect(config.mongodb_url,function(err){
     if(err){
         console.log('无法连接到mongodb');
         process.exit(1);
-}
-})
+    }
+});
 
 //models
 require('./user');

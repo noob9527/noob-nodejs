@@ -10,12 +10,15 @@ exports.showSignup=function (req, res) {
 
 exports.signup=function (req, res) {
     var user=new User(req.body.user);
-    if(req.body.user.password!==req.body.user.repassword){
-        res.status(422);
-        return res.render('sign/signup',{
-            err:"两次输入的密码不一致"
-        });
-    }
+
+    // mark for test virtual property
+    //if(req.body.user.password!==req.body.user.repassword){
+    //    res.status(422);
+    //    return res.render('sign/signup',{
+    //        err:"两次输入的密码不一致"
+    //    });
+    //}
+
     //save user
     user.save(function (err, user) {
         if (err) {

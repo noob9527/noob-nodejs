@@ -12,7 +12,11 @@ var config=require('../../config');
 
 describe('test/controllers/sign.test.js',function(){
     before(function() {
-        // runs before all tests in this block
+        User.remove({},function(err){
+            if(err){
+                console.log('fail to remove users collection');
+            }
+        })
     });
     after(function() {
         // runs after all tests in this block
@@ -70,13 +74,14 @@ describe('test/controllers/sign.test.js',function(){
             request.post('/signup')
                 .type('form')
                 .send({
-                    "user[username]":username,
-                    "user[email]":email,
-                    "user[password]":password
+                    "user[username]":'a'+username,
+                    "user[email]":'a'+email,
+                    "user[password]":password,
+                    "user[repassword]":''
                 })
                 .expect(422,done);
         });
-        it('should reject because of validator',function(done){
+        it('should reject because of validatorErr',function(done){
             request.post('/signup')
                 .type('form')
                 .send({

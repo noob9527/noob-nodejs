@@ -18,12 +18,25 @@ exports.getUserByLoginInfo=function(user,callback){
 
     async.waterfall([
         function(callback){
-            getUser(user.loginInfo,callback);//TODO:can't get loginInfo like this!!
+            getUser(user.loginInfo,function(err,userModel){
+                if(err)
+                    return callback(err);
+                if(!userModel)
+                    return callback(new Error('找不到"'+user.loginInfo+'"对应的用户！'))
+                callback(null,userModel);
+            });
         },
         function (userModel,callback) {
-            userModel.auth(user,callback);
+            userModel.auth(user,function(err,bool){
+                if(err)
+                    return callback(err);
+                if(!bool)
+                    return callback(new Error('密码错误!'));
+                callback(null,userModel);
+            });
         }
-    ],callback)
+    ],callback);
+
 };
 
 /**
@@ -35,7 +48,7 @@ exports.getUserByLoginInfo=function(user,callback){
  * @param {Function} callback 回调函数
  */
 exports.getUserByUserName = function (username, callback) {
-    User.findOne({'username': username}, callback);//TODO
+    User.findOne({'username': username}, callback);
 };
 
 /**
@@ -47,5 +60,5 @@ exports.getUserByUserName = function (username, callback) {
  * @param {Function} callback 回调函数
  */
 exports.getUserByMail = function (email, callback) {
-    User.findOne({email: email}, callback);//TODO
+    User.findOne({email: email}, callback);
 };

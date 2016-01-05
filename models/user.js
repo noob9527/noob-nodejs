@@ -3,12 +3,20 @@
  */
 var validator = require('validator');
 var mongoose  = require('mongoose');
+var tools=require('../common/tools');//TODO
 
 //type
+//TODO:CustomValidator
 var UserSchema=new mongoose.Schema({
-    username:{type:String,required:true},
-    password:{type:String,required:true},
-    email:{type:String,validate:validator.isEmail}
+    username:{type:String,
+        required:true,
+        maxlength:12},
+    password:{type:String,
+        required:true,
+        set:tools.bhash},
+    email:{type:String,
+        lowercase:true,
+        validate:validator.isEmail}
 },{timestamps:true});
 
 //schema option
@@ -19,25 +27,21 @@ UserSchema.index({username:1},{unique:true});
 UserSchema.index({email:1},{unique:true});
 
 //virtual
-UserSchema.virtual('repassword').set(function(repassword){
-    //if(repassword!==this.password){
-    //    throw new Error('两次输入的密码不一致');
-
-        //this.on('save',function(callback){
-        //    callback(new Error('两次输入的密码不一致'));
-        //})
-    //}
-});
+//UserSchema.virtual('repassword').set(function(repassword){
+//
+//});
 
 //middleware(parallel)
 //UserSchema.pre('save',true,function(next,done){
-//    console.log(this.repassword);
 //    next();
 //    done();
 //});
-
 //plugin
+
 //statics and methods
+UserSchema.methods.auth=function(user, callback){
+    tools.bcompare(user.password,this.password,callback);
+};
 
 //compile schema
 mongoose.model('User',UserSchema);

@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "author": "noob9527",
   "dependencies": {
+    "async": "^1.5.1",
     "bcryptjs": "^2.3.0",
     "body-parser": "~1.13.2",
     "connect-redis": "^3.0.1",

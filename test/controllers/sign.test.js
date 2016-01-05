@@ -29,8 +29,7 @@ describe('test/controllers/sign.test.js',function(){
     });
 
     // test cases
-    var now=new Date();
-    var username='testUser'+now;
+    var username='testUser';
     var email='test@qq.com';
     var password='testPassword';
 
@@ -42,6 +41,7 @@ describe('test/controllers/sign.test.js',function(){
     });
     describe('signup',function(){
         it('should sign up a user',function(done){
+            this.timeout(0);
             request.post('/signup')
                 .type('form')
                 .send({
@@ -52,6 +52,7 @@ describe('test/controllers/sign.test.js',function(){
                 })
                 .expect(302,function(err,res){
                     should.not.exists(err);
+                    res.status.should.be.exactly(302);
                     User.findOne({username:username},function(err,user){
                         should.not.exists(err);
                         user.should.ok();
@@ -92,5 +93,27 @@ describe('test/controllers/sign.test.js',function(){
                 })
                 .expect(422,done);
         });
+    });
+    describe('showSignin',function(){
+        it('should show sign in view to visitor',function(done){
+            request.get('/signin')
+                .expect(200,done);
+        })
+    });
+    describe('signin',function(){
+        it('should sign in success',function(done){
+            request.post('/signin')
+                .type('form')
+                .send({
+                    "user[username]":username,
+                    //"user[email]":email,
+                    "user[password]":password
+                })
+                .expect(302,function(err,res){
+                    should.not.exists(err);
+                    res.locals.user.should.be.ok();
+                });
+        })
     })
-})
+
+});

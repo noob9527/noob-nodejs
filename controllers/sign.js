@@ -3,21 +3,23 @@
  */
 
 var User=require('../models').User;
+var UserProxy=require('../proxy/user');
+
+//TODO:Async and Proxy
 
 exports.showSignup=function (req, res) {
     res.render('sign/signup');
 };
 
 exports.signup=function (req, res) {
-    var user=new User(req.body.user);
+    if(req.body.user.password!==req.body.user.repassword){
+        res.status(422);
+        return res.render('sign/signup',{
+            err:"两次输入的密码不一致"
+        });
+    }
 
-    // mark for test virtual property
-    //if(req.body.user.password!==req.body.user.repassword){
-    //    res.status(422);
-    //    return res.render('sign/signup',{
-    //        err:"两次输入的密码不一致"
-    //    });
-    //}
+    var user=new User(req.body.user);
 
     //save user
     user.save(function (err, user) {
@@ -37,17 +39,12 @@ exports.showSignin=function (req, res) {
 };
 
 exports.signin= function (req,res) {
-    User.findOne({username:req.body.user.username},function(err,user){
+    UserProxy.getUserByLoginInfo(req.body.user,function(err,user){
         if(err){
-            return res.redirect('/signin')  //登陆失败
-        }
-        if(!user||!user.password){
-            return res.redirect('/signin')  //找不到用户
-        }
-        if(req.body.user.password!=user.password){
-            return res.redirect('/signin')  //密码错误
+            res.status(422);
+            return res.render('sign/signin',{err:err.message});
         }
         req.session.user=user;
         res.redirect('/');
-    })
+    });
 };

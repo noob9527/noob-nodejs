@@ -4,7 +4,7 @@
 var app = require('../../app');
 var request = require('supertest')(app);
 var should = require('should');
-var User=require('../../models').User;
+var User=require('../../model').User;
 var config=require('../../config');
 
 //TODO:init mongodb
@@ -33,7 +33,7 @@ describe('test/controllers/sign.test.js',function(){
     var email='test@qq.com';
     var password='testPassword';
 
-    describe('showSignup',function(){
+    describe.only('showSignup',function(){
         it('should show sign up view to visitor',function(done){
             request.get('/signup')
                 .expect(200,done);

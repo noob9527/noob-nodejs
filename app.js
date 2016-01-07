@@ -3,7 +3,7 @@
  */
 
 var Server=require('./server');
-var config = require('./config');
+var config = require('./config')(__dirname);
 
 var server=new Server(config);
 

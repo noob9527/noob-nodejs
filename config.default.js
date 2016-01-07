@@ -1,17 +1,30 @@
 /**
  * Created by xy206 on 2015/12/30.
  */
+var path = require('path');
 
-var config={
-    //mongodb
-    mongodb_url:'mongodb://127.0.0.1/noob', //for mongoose
+module.exports = function(root){
+    return{
+        //mongodb
+        mongodb:{
+            url:'mongodb://127.0.0.1/noob',
+            config:{
+                server: {
+                    poolSize: 12,
+                    socketOptions: {
+                        keepAlive: 1
+                    }
+                }
+            }
+        },
+        //dir
+        root: root,
+        model: path.join(root, 'model'),
+        view: path.join(root, 'view'),
+        controller: path.join(root, 'controller'),
 
-    //redis config
-    redis_host:'127.0.0.1',
-    redis_port:'6379',
+        secret: 'noobjs',
 
-    //cookie session config
-    secret:'noob'
+        port:3000
+    }
 };
-
-module.exports = config;

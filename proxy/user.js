@@ -2,7 +2,7 @@
  * Created by xy on 2016/1/5.
  */
 
-var User=require('../models').User;
+var User=require('../model').User;
 var validator = require('validator');
 var async=require('async');
 

@@ -16,7 +16,7 @@ exports.signup=function*(next){
 };
 
 exports.showSignin=function*(next){
-
+    this.body=yield render('sign/signin');
 };
 
 exports.signin=function*(next){

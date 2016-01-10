@@ -60,6 +60,11 @@ server.errHandle=function(callback){
     process.on('uncaughtException', callback);
 };
 
+//for test
+//server.address=function(){
+//
+//};
+
 function initGlobal(){
     global.Conf = this.opts;
     global._log = log;

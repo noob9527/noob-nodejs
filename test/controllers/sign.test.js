@@ -2,7 +2,7 @@
  * Created by xy206 on 2016/1/2.
  */
 var app = require('../../app');
-var request = require('supertest')(app);
+var request = require('./testutil').getRequest(app);
 var should = require('should');
 var User=require('../../model').User;
 var config=require('../../config');
@@ -33,7 +33,7 @@ describe('test/controllers/sign.test.js',function(){
     var email='test@qq.com';
     var password='testPassword';
 
-    describe.only('showSignup',function(){
+    describe('showSignup',function(){
         it('should show sign up view to visitor',function(done){
             request.get('/signup')
                 .expect(200,done);

@@ -5,11 +5,11 @@
 var Server=require('./server');
 var config = require('./config')(__dirname);
 
-var server=new Server(config);
+var app=new Server(config);
 
-server.start();
+app.start();
 
-
+module.exports=app;
 //
 //var express = require('express');
 //var session = require('express-session');

@@ -2,6 +2,12 @@
  * Created by xy206 on 2015/12/30.
  */
 
+var mongoose=require('mongoose');
+
+require('./user');
+
+exports.User=mongoose.model('User');
+
 //var mongoose=require('mongoose');
 //var config=require('../config');
 //

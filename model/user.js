@@ -44,5 +44,5 @@ UserSchema.methods.auth=function(user, callback){
 };
 
 //compile schema
-mongoose.model('User',UserSchema);
+module.exports = mongoose.model('User',UserSchema);
 

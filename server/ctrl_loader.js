@@ -12,7 +12,7 @@ var path=require('path');
 var ctrls = {};
 
 fs.readdirSync(Conf.controller).forEach(function(file) {
-    if (file.indexOf('.js') != -1) {
+    if (~file.indexOf('.js')) {
         var ctrlName = file.split('.')[0];
         ctrls[ctrlName] = require(path.join(Conf.controller, file));
     }

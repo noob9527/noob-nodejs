@@ -1,7 +1,9 @@
 config.js
-#.cov
 coverage
 node_modules
+bower_components
+vendor
+#.cov
 #.naeindex
 #coverage.html
 #.monitor

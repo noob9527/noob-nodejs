@@ -6,6 +6,7 @@ var koa=require('koa'),
     staticCache = require('koa-static-cache'),
     session=require('koa-generic-session'),
     redisStore=require('koa-redis'),
+    bodyParser = require('koa-bodyparser'),
     koa_router=require('koa-router');
 var log=require('util').log;
 var routes=require('./routes');
@@ -43,13 +44,15 @@ server.start=function(){
         maxAge: 365 * 24 * 60 * 60
     }));
 
+    //bodyParser
+    this.use(bodyParser());
+
     //TODO:loadMiddleWare
     initRoutes.call(this);
 
-    connectDb.call(this);
+    initDb.call(this);
 
     this.listen(this.opts.port || 3000);
-    //debug("Server listening on " + port);
 };
 
 /**
@@ -60,21 +63,15 @@ server.errHandle=function(callback){
     process.on('uncaughtException', callback);
 };
 
-//for test
-//server.address=function(){
-//
-//};
-
 function initGlobal(){
     global.Conf = this.opts;
     global._log = log;
-    //global.Database = require('./modelloader.js');
-    //debug("initlizing global");
+    global.Database = require('./model_loader.js');//这里应该可优化
 }
 
 
 function initRoutes() {
-    var ctrls = require('./ctrlloader.js');
+    var ctrls = require('./ctrl_loader.js');
     var router = koa_router();
     routes.forEach(function(route){
         var action=ctrls[route.ctrl][route.action];
@@ -83,23 +80,6 @@ function initRoutes() {
     this.use(router.middleware());
 }
 
-function connectDb(){
+function initDb(){
     mongoose.connect(this.opts.mongodb.url,this.opts.mongodb.config);
-
-    mongoose.connection.on('connected', function() {
-        console.log('mongoose connected');
-    });
-    mongoose.connection.on('error', function(err) {
-        console.log('mongoose default connection error: ' + err);
-    });
-    mongoose.connection.on('disconnected', function() {
-        console.log('mongoose default connection disconnected');
-    });
-    process.on('SIGINT', function() {
-        mongoose.connection.close(function() {
-            console.log('mongoose default connection disconnected through app termination');
-            process.exit(0);
-        });
-    });
-    
 }
